@@ -4,10 +4,20 @@ import cucumber.api.java.ru.Дано;
 import cucumber.api.java.ru.И;
 import cucumber.api.java.ru.Когда;
 import cucumber.api.java.ru.Тогда;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 public class Steps {
     @Дано("^пользователь зашел на сайт$")
     public void userOnSite() {
+        System.setProperty("webdriver.chrome.driver", "C:\\drivers\\chromedriver110\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://ya.ru");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("пользователь зашел на сайт");
     }
 

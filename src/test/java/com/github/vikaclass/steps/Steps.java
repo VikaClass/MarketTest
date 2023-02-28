@@ -1,5 +1,7 @@
 package com.github.vikaclass.steps;
 
+import com.github.vikaclass.pages.MainPage;
+import com.github.vikaclass.pages.ProductsPage;
 import cucumber.api.java.ru.Дано;
 import cucumber.api.java.ru.И;
 import cucumber.api.java.ru.Когда;
@@ -25,41 +27,37 @@ public class Steps {
 
     @И("^у него пустая корзина$")
     public void bucketIsEmpty() throws Throwable {
-        WebElement itemCount = driver.findElement(By.id("in-cart-count-icon"));
-        String itemCountText = itemCount.getText();
-        Assert.assertEquals("0", itemCountText);
+        MainPage mainPage = new MainPage(driver);
+        String bucketCounter = mainPage.getBucketCounter();
+        Assert.assertEquals("0", bucketCounter);
     }
 
-    @Когда("^пользователь заполняет поле поиска товара \"([^\"]*)\"$")
+    @Когда("^пользователь выполняет поиск товара \"([^\"]*)\"$")
     public void searceGoods (String arg1) throws Throwable {
-        WebElement searchMain = driver.findElement(By.xpath("//*[@id=\"search-main\"]"));
-        searchMain.sendKeys(arg1);
+        MainPage mainPage = new MainPage(driver);
+        mainPage.search(arg1);
+
     }
 
-    @И("^нажимает на кнопку enter$")
-    public void pressedEnter() throws Throwable {
-        WebElement searchMain = driver.findElement(By.id("search-main"));
-        searchMain.sendKeys(Keys.ENTER);
-    }
 
     @И("^нажимает на красную кнопку купить$")
     public void pressedRedButtonBuy() throws Throwable {
-        WebElement buyButton = driver.findElement(By.xpath("//*[@id=\"list_items\"]/div[1]/div[2]/div[2]/div[4]/div/div[3]"));
-        buyButton.click();
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.clickBuyButton();
     }
 
     @И("^нажимает на кнопку оформить доставку или резерв в магазине$")
     public void pressedMakeOrder() throws Throwable {
-        Thread.sleep(1000);//TODO: избавиться от неправильного ожидания
-        WebElement orderButton = driver.findElement(By.xpath("//*[@id=\"minicart\"]/div/div/div[2]/div[3]/div[1]/div/a/div"));
-        orderButton.click();
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.clickMakeOrder();
+
     }
 
     @Тогда("^открывается корзина с одним товаром$")
     public void shouldBeOneGood() throws Throwable {
-        WebElement countElement = driver.findElement(By.id("h-cart-count"));
-        String countString = countElement.getText();
-        Assert.assertEquals("1",countString);
+        ProductsPage productsPage = new ProductsPage(driver);
+        String counter = productsPage.getBucketCounter();
+        Assert.assertEquals("1",counter);
 
         driver.quit();//TODO: перенести в правильное место
 
